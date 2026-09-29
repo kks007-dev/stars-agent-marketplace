@@ -38,7 +38,7 @@ export default function Home() {
 
       <section className="mx-auto max-w-6xl px-4" aria-labelledby="new">
         <div className="flex items-end justify-between">
-          <h2 id="new" className="text-2xl font-bold">New today</h2>
+          <h2 id="new" className="text-2xl font-bold">Recently added</h2>
           <Link href="/agents" className="text-sm text-gold-300 underline">See all</Link>
         </div>
         <p className="mt-1 text-sm text-slate-400">A fresh agent is added by our daily routine. Newest first.</p>

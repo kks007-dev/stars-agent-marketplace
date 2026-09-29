@@ -5,7 +5,14 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 const isProtected = createRouteMatcher(["/chat(.*)", "/api/chat(.*)"]);
 
 const clerk = clerkMiddleware(async (auth, req) => {
-  if (isProtected(req)) await auth.protect();
+  if (!isProtected(req)) return;
+  // API callers get a JSON 401 instead of a redirect to the sign-in page.
+  if (req.nextUrl.pathname.startsWith("/api/")) {
+    const { userId } = await auth();
+    if (!userId) return NextResponse.json({ error: "Please sign in to chat." }, { status: 401 });
+    return;
+  }
+  await auth.protect();
 });
 
 const configured = Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY && process.env.CLERK_SECRET_KEY);
